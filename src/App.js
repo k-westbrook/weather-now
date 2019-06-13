@@ -23,7 +23,7 @@ class App extends React.Component {
     let response = await axios.get(`http://api.openweathermap.org/data/2.5/weather?lat=${this.state.latitude}&lon=${this.state.longitude}&APPID=48f52744023d2822c0dc7e4697b0de4f`);
 
     let weatherInfo = await response.data;
-    console.log(weatherInfo)
+    console.log(weatherInfo);
   }
 
   getLocation() {
@@ -39,7 +39,7 @@ class App extends React.Component {
         latitude: lat,
         longitude: lng
       });
-
+      locationObject.getWeatherInfo();
     }
 
     if (navigator.geolocation) {
@@ -54,7 +54,6 @@ class App extends React.Component {
 
   componentDidMount() {
     this.getLocation();
-    this.getWeatherInfo();
   }
   render() {
 
