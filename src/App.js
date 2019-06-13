@@ -2,7 +2,8 @@ import React from 'react';
 import logo from './logo.svg';
 import './App.css';
 import { render } from 'react-dom';
-import axios from 'axios'
+import axios from 'axios';
+
 
 //const API= api.openweathermap.org/data/2.5/weather?lat={lat}&lon={lon}&APPID={APIKEY}
 class App extends React.Component {
@@ -20,7 +21,7 @@ class App extends React.Component {
 
   async getWeatherInfo() {
     console.log(this.state)
-    let response = await axios.get(`http://api.openweathermap.org/data/2.5/weather?lat=${this.state.latitude}&lon=${this.state.longitude}&APPID=48f52744023d2822c0dc7e4697b0de4f`);
+    let response = await axios.get(`http://api.openweathermap.org/data/2.5/weather?lat=${this.state.latitude}&lon=${this.state.longitude}&APPID={process.env.WEATHER_API_KEY}`);
 
     let weatherInfo = await response.data;
     console.log(weatherInfo);
