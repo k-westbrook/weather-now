@@ -4,8 +4,6 @@ import './App.css';
 import { render } from 'react-dom';
 import axios from 'axios';
 
-
-//const API= api.openweathermap.org/data/2.5/weather?lat={lat}&lon={lon}&APPID={APIKEY}
 class App extends React.Component {
 
   constructor(props) {
@@ -20,11 +18,13 @@ class App extends React.Component {
   }
 
   async getWeatherInfo() {
-    console.log(this.state)
-    let response = await axios.get(`https://api.openweathermap.org/data/2.5/weather?lat=${this.state.latitude}&lon=${this.state.longitude}&APPID={process.env.WEATHER_API_KEY}`);
+    let response = await axios.get(`https://api.openweathermap.org/data/2.5/weather?lat=${this.state.latitude}&lon=${this.state.longitude}&&units=imperial&APPID=${process.env.WEATHER_API_KEY}`);
 
     let weatherInfo = await response.data;
-    console.log(weatherInfo);
+    console.log(weatherInfo)
+    this.setState({
+      weather: weatherInfo.main.temp
+    })
   }
 
   getLocation() {
@@ -65,7 +65,7 @@ class App extends React.Component {
 
           <h3>Weather</h3>
           {(this.state.weather) ?
-            <p>{this.state.weather}</p>
+            <p>Temperature: {this.state.weather}</p>
             :
             <p>Loading Weather..</p>
           }
