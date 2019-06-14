@@ -19,9 +19,11 @@ class App extends React.Component {
   }
 
   async getWeatherInfo() {
-    let response = await axios.get(`https://api.openweathermap.org/data/2.5/weather?lat=${this.state.latitude}&lon=${this.state.longitude}&&units=imperial&APPID=de429bf075776659a765dfac1f54017a`);
 
     let weatherInfo = response.data;
+
+    let response = await axios.get(`https://api.openweathermap.org/data/2.5/weather?lat=${this.state.latitude}&lon=${this.state.longitude}&&units=imperial&APPID=${process.env.REACT_APP_WEATHER_API_KEY}`);
+
 
 
     this.setState({
