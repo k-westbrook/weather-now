@@ -1,7 +1,5 @@
 import React from 'react';
-import logo from './logo.svg';
 import './App.css';
-import { render } from 'react-dom';
 import axios from 'axios';
 
 class App extends React.Component {
@@ -11,20 +9,28 @@ class App extends React.Component {
     this.state = {
       longitude: null,
       latitude: null,
-      weather: null
+      temp: null,
+      loadLocation: false,
+      tempClassName: 'normal-temp'
     }
     this.getLocation = this.getLocation.bind(this);
     this.getWeatherInfo = this.getWeatherInfo.bind(this);
+    this.handleClick = this.handleClick.bind(this);
   }
 
   async getWeatherInfo() {
+
+    let weatherInfo = response.data;
+
     let response = await axios.get(`https://api.openweathermap.org/data/2.5/weather?lat=${this.state.latitude}&lon=${this.state.longitude}&&units=imperial&APPID=${process.env.REACT_APP_WEATHER_API_KEY}`);
 
-    let weatherInfo = await response.data;
+
 
     this.setState({
-      weather: weatherInfo.main.temp
+      temp: weatherInfo.main.temp,
+      locationName: weatherInfo.name
     })
+    this.updateFontClass();
   }
 
   getLocation() {
@@ -41,6 +47,7 @@ class App extends React.Component {
         longitude: lng
       });
       locationObject.getWeatherInfo();
+
     }
 
     if (navigator.geolocation) {
@@ -53,22 +60,51 @@ class App extends React.Component {
     }
   }
 
-  componentDidMount() {
+  handleClick() {
+    this.setState({
+      loadLocation: true
+    })
     this.getLocation();
+
   }
+
+  updateFontClass() {
+
+    if (this.state.temp > 80) {
+      this.setState({
+        tempClassName: 'hot-temp'
+      })
+    } else if (this.state.temp < 40) {
+      this.setState({
+        tempClassName: 'cold-temp'
+      })
+    }
+  }
+
   render() {
-
-
+    console.log(this.state.temp)
+    console.log(this.state.tempClassName)
     return (
       <div className="App">
         <header className="App-header">
 
-          <h3>Weather</h3>
-          {(this.state.weather) ?
-            <p>Temperature: {this.state.weather}</p>
+          <h3 className="front-header">Weather</h3>
+          {(this.state.temp) ?
+            <div className="weather-data-points">
+              <h5>Location: {this.state.locationName}</h5>
+              <h5 className={this.state.tempClassName}> Temperature: {this.state.temp}°F</h5>
+            </div>
             :
-            <p>Loading Weather..</p>
+            <div>
+              {(!this.state.loadLocation) ?
+                <button className="get-weather-button" onClick={this.handleClick}>Get My Weather</button>
+                :
+
+                <p className="weather-data-points">Loading Weather..</p>
+              }
+            </div>
           }
+
         </header>
       </div >
     );
