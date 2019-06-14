@@ -1,2 +1,2 @@
 
-process.env.WEATHER_API_KEY = '8e168ded35a98bf1191c429e1ceb3242'
+process.env.WEATHER_API_KEY = 'de429bf075776659a765dfac1f54017a'
